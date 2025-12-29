@@ -179,8 +179,7 @@ def referral(message):
 @bot.message_handler(func=lambda m: m.text == "⚙️ Admin Panel" and m.from_user.id == ADMIN_ID)
 def admin_panel(message):
     mk = types.ReplyKeyboardMarkup(resize_keyboard=True)
-def admin_panel(message):
-    mk = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    # বাটনগুলো প্রতিটি আলাদা লাইনে সাজানো হলো
     mk.add("➕ Add Stock")
     mk.add("📈 Edit Price")
     mk.add("📊 Total Users")
@@ -192,9 +191,6 @@ def admin_panel(message):
     mk.add("🏠 Back to Main")
     bot.send_message(message.chat.id, "🛠️ অ্যাডমিন প্যানেল", reply_markup=mk)
 
-
-
-    bot.send_message(message.chat.id, "🛠 অ্যাডমিন প্যানেল", reply_markup=mk)
 
 @bot.message_handler(func=lambda m: m.text == "➕ Add Stock" and m.from_user.id == ADMIN_ID)
 def add_stock_step1(message):
