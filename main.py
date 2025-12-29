@@ -182,6 +182,8 @@ def admin_panel(message):
     mk.add("➕ Add Stock", "📈 Edit Price")
     mk.add("📊 Total Users", "📢 Broadcast")
     mk.add("💰 Edit User Bal", "🏠 Back to Main")
+    mk.add("🔍 Find User ID")
+
     bot.send_message(message.chat.id, "🛠 অ্যাডমিন প্যানেল", reply_markup=mk)
 
 @bot.message_handler(func=lambda m: m.text == "➕ Add Stock" and m.from_user.id == ADMIN_ID)
