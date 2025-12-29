@@ -239,5 +239,29 @@ def edit_price_final(message, category):
         stock[category]['price'] = new_price
         bot.send_message(message.chat.id, f"✅ সফল! এখন থেকে {category}-এর নতুন দাম {new_price} টাকা।")
     except ValueError:
-        bot.send_message(message.chat.id, "❌ ভুল হয়েছে! দাম হিসেবে শুধুমাত্র সংখ্যা (যেমন: ১৫) লিখুন।")bot.infinity_polling()
-  
+        bot.send_message(message.chat.id, "❌ ভুল হয়েছে! দাম হিসেবে শুধুমাত্র সংখ্যা (যেমন: ১৫) লিখুন।")    ) # আগের মেসেজের ব্র্যাকেটটি এখানে শেষ হবে
+
+# --- Find User Info বাটন (ইউজার আইডি ও ব্যালেন্স দেখা) ---
+@bot.message_handler(func=lambda m: m.text == "🔍 Find User ID" and m.from_user.id == ADMIN_ID)
+def find_user_start(message):
+    bot.send_message(message.chat.id, "ইউজারের ইউজারনেমটি লিখুন (@ ছাড়া):")
+    bot.register_next_step_handler(message, find_user_final)
+
+def find_user_final(message):
+    target = message.text.strip()
+    found = False
+    for uid, info in users.items():
+        if info.get('username') == target:
+            bot.send_message(message.chat.id, f"✅ তথ্য:\n🆔 আইডি: `{uid}`\n💰 ব্যালেন্স: {info['bal']} TK\n📦 অর্ডার: {info['orders']}", parse_mode="Markdown")
+            found = True
+            break
+    if not found:
+        bot.send_message(message.chat.id, "❌ ইউজার খুঁজে পাওয়া যায়নি।")
+
+# --- মেইন মেনুতে ফেরার বাটন ---
+@bot.message_handler(func=lambda m: m.text == "🏠 Back to Main")
+def go_home(message):
+    bot.send_message(message.chat.id, "মেইন মেনু:", reply_markup=main_menu(message.from_user.id))
+
+# এটিই হবে ফাইলের একদম শেষ লাইন। কোনো স্পেস ছাড়া বামে লেগে থাকবে।
+bot.infinity_polling()
