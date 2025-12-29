@@ -1,4 +1,4 @@
-import telebot
+m.textimport telebot
 from telebot import types
 import io
 
@@ -240,6 +240,31 @@ def edit_price_final(message, category):
         bot.send_message(message.chat.id, f"✅ সফল! এখন থেকে {category}-এর নতুন দাম {new_price} টাকা।")
     except ValueError:
         bot.send_message(message.chat.id, "❌ ভুল হয়েছে! দাম হিসেবে শুধুমাত্র সংখ্যা (যেমন: ১৫) লিখুন।")
+# --- ১. Find User বাটন কার্যকর করার কোড ---
+@bot.message_handler(func=lambda m: m.text == "🔍 Find User ID" and m.from_user.id == ADMIN_ID)
+def find_user_start(message):
+    bot.send_message(message.chat.id, "ইউজারের ইউজারনেমটি লিখুন (উদাহরণ: @TOHID_Admin2):")
+    bot.register_next_step_handler(message, find_user_details)
+
+def find_user_details(message):
+    # ইউজারনেম থেকে @ চিহ্ন সরিয়ে নেওয়া
+    target_username = message.text.replace("@", "").strip()
+    found = False
+    
+    # বটের মেমোরিতে থাকা ইউজারদের মধ্যে সার্চ করা
+    for uid, info in users.items():
+        if info.get('username') == target_username:
+            text = (f"✅ ইউজার তথ্য পাওয়া গেছে!\n\n"
+                    f"🆔 ইউজার আইডি: `{uid}`\n"
+                    f"💰 বর্তমান ব্যালেন্স: {info['bal']} টাকা\n"
+                    f"📦 মোট অর্ডার: {info['orders']} টি\n"
+                    f"👥 মোট রেফার: {info['ref']} জন")
+            bot.send_message(message.chat.id, text, parse_mode="Markdown")
+            found = True
+            break
+    
+    if not found:
+        bot.send_message(message.chat.id, "❌ দুঃখিত! এই ইউজারনেমটি ডাটাবেজে নেই। ইউজারকে একবার /start দিতে বলুন।")
 
 bot.infinity_polling()
   
