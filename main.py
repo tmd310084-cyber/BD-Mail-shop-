@@ -240,6 +240,5 @@ def edit_price_final(message, category):
         bot.send_message(message.chat.id, f"✅ সফল! এখন থেকে {category}-এর নতুন দাম {new_price} টাকা।")
     except ValueError:
         bot.send_message(message.chat.id, "❌ ভুল হয়েছে! দাম হিসেবে শুধুমাত্র সংখ্যা (যেমন: ১৫) লিখুন।")
-
 bot.infinity_polling()
   
