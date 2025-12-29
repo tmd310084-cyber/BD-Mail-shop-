@@ -216,6 +216,30 @@ def broadcast_final(message):
 @bot.message_handler(func=lambda m: m.text == "🏠 Back to Main")
 def back_home(message):
     bot.send_message(message.chat.id, "মেইন মেনু:", reply_markup=main_menu(message.from_user.id))
+# --- Edit Price বাটন কার্যকর করার কোড ---
+@bot.message_handler(func=lambda m: m.text == "📈 Edit Price" and m.from_user.id == ADMIN_ID)
+def edit_price_start(message):
+    markup = types.InlineKeyboardMarkup()
+    # স্টকে থাকা ক্যাটাগরিগুলো বাটনে দেখাবে
+    for category in stock:
+        price = stock[category]['price']
+        markup.add(types.InlineKeyboardButton(f"{category} ({price} TK)", callback_data=f"setprice_{category}"))
+    bot.send_message(message.chat.id, "কোন ক্যাটাগরির দাম পরিবর্তন করতে চান?", reply_markup=markup)
+
+@bot.callback_query_handler(func=lambda call: call.data.startswith("setprice_"))
+def edit_price_step2(call):
+    category = call.data.replace("setprice_", "")
+    bot.send_message(call.message.chat.id, f"এখন {category}-এর নতুন দামটি লিখুন (যেমন: ২০):")
+    # ইউজারের পরবর্তী মেসেজটি দাম হিসেবে গ্রহণ করবে
+    bot.register_next_step_handler(call.message, edit_price_final, category)
+
+def edit_price_final(message, category):
+    try:
+        new_price = int(message.text)
+        stock[category]['price'] = new_price
+        bot.send_message(message.chat.id, f"✅ সফল! এখন থেকে {category}-এর নতুন দাম {new_price} টাকা।")
+    except ValueError:
+        bot.send_message(message.chat.id, "❌ ভুল হয়েছে! দাম হিসেবে শুধুমাত্র সংখ্যা (যেমন: ১৫) লিখুন।")
 
 bot.infinity_polling()
   
