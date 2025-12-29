@@ -181,6 +181,7 @@ def admin_panel(message):
     mk = types.ReplyKeyboardMarkup(resize_keyboard=True)
     mk.add("➕ Add Stock", "📈 Edit Price")
     mk.add("📊 Total Users", "📢 Broadcast")
+mk.add("➕ Add Category", "🗑️ Delete Category")
     mk.add("💰 Edit User Bal", "🏠 Back to Main")
     mk.add("🔍 Find User ID")
 
