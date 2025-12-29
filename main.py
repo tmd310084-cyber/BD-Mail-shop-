@@ -4,7 +4,7 @@ from telebot import types
 import io
 
 # কনফিগারেশন
-API_TOKEN = '8558230669:AAE9ABn4jCcffAKxkXgKG_JAfVs3L3Ht4Qg'
+API_TOKEN = '8558230669:AAE-uoWZHkNAZdD1ogDd6LBY3SX6_8AFMfU'
 ADMIN_ID = 8307689863
 LOG_GROUP_ID = -1003537537264
 bot = telebot.TeleBot(API_TOKEN)
